@@ -1,0 +1,3 @@
+/home/syalsr/CPP/GIS/cmake-build-debug/CMakeFiles/GIS.dir
+/home/syalsr/CPP/GIS/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/syalsr/CPP/GIS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
