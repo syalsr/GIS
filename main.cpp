@@ -2,13 +2,15 @@
 #include <vector>
 #include <map>
 
+#include "json.hpp"
 #include "TrasportRouter.hpp"
-
+#include "TransportDataBase.hpp"
 
 
 int main() {
-    TransportRouter tr;
-    std::cout << "Hello, World!" << std::endl;
-    std::vector<int> v{1,2,3,4,5,6,};
+    auto request = Json::Load(std::cin);
+    auto request_as_map = request.GetRoot().AsMap();
+
+    TransportDataBase transport_db{};
     return 0;
 }
