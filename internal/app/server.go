@@ -10,14 +10,13 @@ import (
 
 	"github.com/syalsr/GIS/internal/app/servicegis"
 	"github.com/syalsr/GIS/internal/config"
+	api "github.com/syalsr/GIS/pkg/GIS-api/GIS/v1"
 
 	"google.golang.org/grpc"
 
-	api "github.com/syalsr/GIS/pkg/GIS-api/GIS/v1"
 )
 
 func Run(ctx context.Context, cfg *config.Config) error {
-
 	_, cancel := context.WithCancel(ctx)
 
 	listener, err := net.Listen("tcp", cfg.GRPCAddr)

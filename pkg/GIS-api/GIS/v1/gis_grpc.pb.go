@@ -22,7 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GISClient interface {
-	CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*ResponseStop, error)
+	CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*ResponseWithOnlyError, error)
+	CreateBus(ctx context.Context, in *RequestBus, opts ...grpc.CallOption) (*ResponseWithOnlyError, error)
+	BuildRoute(ctx context.Context, in *RequestRoute, opts ...grpc.CallOption) (*ResponseRoute, error)
 }
 
 type gISClient struct {
@@ -33,9 +35,27 @@ func NewGISClient(cc grpc.ClientConnInterface) GISClient {
 	return &gISClient{cc}
 }
 
-func (c *gISClient) CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*ResponseStop, error) {
-	out := new(ResponseStop)
+func (c *gISClient) CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*ResponseWithOnlyError, error) {
+	out := new(ResponseWithOnlyError)
 	err := c.cc.Invoke(ctx, "/gis.v1.GIS/CreateStop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gISClient) CreateBus(ctx context.Context, in *RequestBus, opts ...grpc.CallOption) (*ResponseWithOnlyError, error) {
+	out := new(ResponseWithOnlyError)
+	err := c.cc.Invoke(ctx, "/gis.v1.GIS/CreateBus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gISClient) BuildRoute(ctx context.Context, in *RequestRoute, opts ...grpc.CallOption) (*ResponseRoute, error) {
+	out := new(ResponseRoute)
+	err := c.cc.Invoke(ctx, "/gis.v1.GIS/BuildRoute", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,15 +66,23 @@ func (c *gISClient) CreateStop(ctx context.Context, in *RequestStop, opts ...grp
 // All implementations should embed UnimplementedGISServer
 // for forward compatibility
 type GISServer interface {
-	CreateStop(context.Context, *RequestStop) (*ResponseStop, error)
+	CreateStop(context.Context, *RequestStop) (*ResponseWithOnlyError, error)
+	CreateBus(context.Context, *RequestBus) (*ResponseWithOnlyError, error)
+	BuildRoute(context.Context, *RequestRoute) (*ResponseRoute, error)
 }
 
 // UnimplementedGISServer should be embedded to have forward compatible implementations.
 type UnimplementedGISServer struct {
 }
 
-func (UnimplementedGISServer) CreateStop(context.Context, *RequestStop) (*ResponseStop, error) {
+func (UnimplementedGISServer) CreateStop(context.Context, *RequestStop) (*ResponseWithOnlyError, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStop not implemented")
+}
+func (UnimplementedGISServer) CreateBus(context.Context, *RequestBus) (*ResponseWithOnlyError, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBus not implemented")
+}
+func (UnimplementedGISServer) BuildRoute(context.Context, *RequestRoute) (*ResponseRoute, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BuildRoute not implemented")
 }
 
 // UnsafeGISServer may be embedded to opt out of forward compatibility for this service.
@@ -86,6 +114,42 @@ func _GIS_CreateStop_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GIS_CreateBus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestBus)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GISServer).CreateBus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gis.v1.GIS/CreateBus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GISServer).CreateBus(ctx, req.(*RequestBus))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GIS_BuildRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestRoute)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GISServer).BuildRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gis.v1.GIS/BuildRoute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GISServer).BuildRoute(ctx, req.(*RequestRoute))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GIS_ServiceDesc is the grpc.ServiceDesc for GIS service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -96,6 +160,14 @@ var GIS_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateStop",
 			Handler:    _GIS_CreateStop_Handler,
+		},
+		{
+			MethodName: "CreateBus",
+			Handler:    _GIS_CreateBus_Handler,
+		},
+		{
+			MethodName: "BuildRoute",
+			Handler:    _GIS_BuildRoute_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
