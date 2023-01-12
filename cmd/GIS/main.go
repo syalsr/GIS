@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/syalsr/GIS/GIS/internal/app"
-	"github.com/syalsr/GIS/GIS/internal/config"
+	"github.com/syalsr/GIS/internal/app"
+	"github.com/syalsr/GIS/internal/config"
 
 	"context"
 	"log"

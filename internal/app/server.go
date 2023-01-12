@@ -8,12 +8,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/syalsr/GIS/GIS/internal/app/servicegis"
-	"github.com/syalsr/GIS/GIS/internal/config"
+	"github.com/syalsr/GIS/internal/app/servicegis"
+	"github.com/syalsr/GIS/internal/config"
 
 	"google.golang.org/grpc"
 
-	api "github.com/syalsr/GIS/pkg/GIS-api"
+	api "github.com/syalsr/GIS/pkg/GIS-api/GIS/v1"
 )
 
 func Run(ctx context.Context, cfg *config.Config) error {
@@ -24,7 +24,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-
+	
 	server := grpc.NewServer()
 	api.RegisterGISServer(server, &servicegis.GIS{})
 	log.Printf("gRPC server listening at %v", listener.Addr())

@@ -1,0 +1,9 @@
+
+# This module represents the "third_party/envoyproxy/protoc-gen-validate" root found in
+# the previous configuration.
+version: v1
+lint:
+  use:
+    - MINIMAL
+  ignore:
+    - validate

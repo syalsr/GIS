@@ -1,11 +1,15 @@
 package servicegis
 
 import (
-	api "github.com/syalsr/GIS/pkg/GIS-api"
+	"context"
+
+	api "github.com/syalsr/GIS/pkg/GIS-api/GIS/v1"
 )
 
 type GIS struct {
-	api.UnimplementedService
+	api.UnimplementedGISServer
 }
 
-
+func (g *GIS) CreateStop(context.Context, *api.RequestStop) (*api.ResponseStop, error) {
+	return nil, nil
+}
