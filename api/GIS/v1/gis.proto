@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package gis.v1;
+
+option go_package = "github.com/syalsr/GIS/pkg/GIS-api/v1;gis";
+
+enum SortDirection {
+  SORT_DIRECTION_UNSPECIFIED = 0;
+  SORT_DIRECTION_ASCENDING = 1;
+  SORT_DIRECTION_DESCENDING = 2;
+}
+
+message PageFilter {
+  uint32 limit = 1;
+  uint32 page = 2;
+}
