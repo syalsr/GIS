@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	cfg := &config.Config{}
+	cfg := &config.App{}
 
 	if err := env.Parse(cfg); err != nil {
 		log.Fatalf("failed to retrieve env variables, %v", err)

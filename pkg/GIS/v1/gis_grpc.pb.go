@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,8 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GISClient interface {
-	CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*ResponseWithOnlyError, error)
-	CreateBus(ctx context.Context, in *RequestBus, opts ...grpc.CallOption) (*ResponseWithOnlyError, error)
+	CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateBus(ctx context.Context, in *RequestBus, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	BuildRoute(ctx context.Context, in *RequestRoute, opts ...grpc.CallOption) (*ResponseRoute, error)
 }
 
@@ -35,8 +36,8 @@ func NewGISClient(cc grpc.ClientConnInterface) GISClient {
 	return &gISClient{cc}
 }
 
-func (c *gISClient) CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*ResponseWithOnlyError, error) {
-	out := new(ResponseWithOnlyError)
+func (c *gISClient) CreateStop(ctx context.Context, in *RequestStop, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/gis.v1.GIS/CreateStop", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -44,8 +45,8 @@ func (c *gISClient) CreateStop(ctx context.Context, in *RequestStop, opts ...grp
 	return out, nil
 }
 
-func (c *gISClient) CreateBus(ctx context.Context, in *RequestBus, opts ...grpc.CallOption) (*ResponseWithOnlyError, error) {
-	out := new(ResponseWithOnlyError)
+func (c *gISClient) CreateBus(ctx context.Context, in *RequestBus, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/gis.v1.GIS/CreateBus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -63,27 +64,29 @@ func (c *gISClient) BuildRoute(ctx context.Context, in *RequestRoute, opts ...gr
 }
 
 // GISServer is the server API for GIS service.
-// All implementations should embed UnimplementedGISServer
+// All implementations must embed UnimplementedGISServer
 // for forward compatibility
 type GISServer interface {
-	CreateStop(context.Context, *RequestStop) (*ResponseWithOnlyError, error)
-	CreateBus(context.Context, *RequestBus) (*ResponseWithOnlyError, error)
+	CreateStop(context.Context, *RequestStop) (*emptypb.Empty, error)
+	CreateBus(context.Context, *RequestBus) (*emptypb.Empty, error)
 	BuildRoute(context.Context, *RequestRoute) (*ResponseRoute, error)
+	mustEmbedUnimplementedGISServer()
 }
 
-// UnimplementedGISServer should be embedded to have forward compatible implementations.
+// UnimplementedGISServer must be embedded to have forward compatible implementations.
 type UnimplementedGISServer struct {
 }
 
-func (UnimplementedGISServer) CreateStop(context.Context, *RequestStop) (*ResponseWithOnlyError, error) {
+func (UnimplementedGISServer) CreateStop(context.Context, *RequestStop) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStop not implemented")
 }
-func (UnimplementedGISServer) CreateBus(context.Context, *RequestBus) (*ResponseWithOnlyError, error) {
+func (UnimplementedGISServer) CreateBus(context.Context, *RequestBus) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBus not implemented")
 }
 func (UnimplementedGISServer) BuildRoute(context.Context, *RequestRoute) (*ResponseRoute, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BuildRoute not implemented")
 }
+func (UnimplementedGISServer) mustEmbedUnimplementedGISServer() {}
 
 // UnsafeGISServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to GISServer will
