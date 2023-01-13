@@ -14,13 +14,3 @@ plugins:
     opt:
       - paths=source_relative
       - generate_unbound_methods=true
-
-  - name: openapiv2
-    out: pkg/GIS-api
-    opt: 
-      - logtostderr=true
-      - allow_merge=true
-      - json_names_for_fields=false
-      - openapi_naming_strategy=fqn
-      - merge_file_name=GIS
-    strategy: all

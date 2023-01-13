@@ -30,8 +30,8 @@ service GIS {
 
 message RequestStop{
   string name = 1;
-  int32 latitude = 2;
-  int32 longitude = 3;
+  int32 longitude = 2;
+  int32 latitude = 3;
   repeated RoadDistance roadDistance = 4;
 }
 
