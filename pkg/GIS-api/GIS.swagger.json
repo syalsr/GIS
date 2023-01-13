@@ -23,7 +23,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/gis.v1.ResponseWithOnlyError"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -87,7 +88,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/gis.v1.ResponseWithOnlyError"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -179,14 +181,6 @@
           "items": {
             "type": "string"
           }
-        }
-      }
-    },
-    "gis.v1.ResponseWithOnlyError": {
-      "type": "object",
-      "properties": {
-        "erorr": {
-          "type": "string"
         }
       }
     },

@@ -3,17 +3,18 @@ syntax = "proto3";
 package gis.v1;
 
 import "google/api/annotations.proto";
+import "google/rpc/empty.proto";
 
 option go_package = "github.com/syalsr/GIS/pkg/GIS-api/v1;gis";
 
 service GIS {
-  rpc CreateStop (RequestStop) returns (ResponseWithOnlyError) {
+  rpc CreateStop (RequestStop) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post : "/stop"
       body : "*"
     };
   };
-  rpc CreateBus (RequestBus) returns (ResponseWithOnlyError) {
+  rpc CreateBus (RequestBus) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post : "/bus"
       body : "*"
