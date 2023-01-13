@@ -7,7 +7,7 @@ import (
 	"github.com/syalsr/GIS/internal/model"
 	"github.com/syalsr/GIS/internal/usecase"
 	gis "github.com/syalsr/GIS/internal/usecase"
-	api "github.com/syalsr/GIS/pkg/GIS-api/GIS/v1"
+	api "github.com/syalsr/GIS/pkg/GIS/v1"
 
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
@@ -33,19 +33,14 @@ func (g *GrpcGIS) CreateStop(ctx context.Context, stop *api.RequestStop) (*empty
 			Velocity:  item.Velocity,
 		})
 	}
-	err := g.gis.CreateStop(ctx, stop.Name, roadDistance, stop.Longitude, stop.Latitude)
-	if err != nil {
-		return nil, err
-	}
+	g.gis.CreateStop(ctx, stop.Name, roadDistance, stop.Longitude, stop.Latitude)
+
 	return nil, nil
 }
 
 // CreateBus - handler for create bus
 func (g *GrpcGIS) CreateBus(ctx context.Context, bus *api.RequestBus) (*emptypb.Empty, error) {
-	err := g.gis.CreateBus(ctx, bus.Name, bus.Stop, bus.IsRoundtrip)
-	if err != nil {
-		return nil, err
-	}
+	g.gis.CreateBus(ctx, bus.Name, bus.Stop, bus.IsRoundtrip)
 	return nil, nil
 }
 

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -66,9 +65,9 @@ func (p *Postgres) CreateStop(ctx context.Context, stop model.Stop) {
 // UpdateStop - update info stop
 func (p *Postgres) UpdateStop(ctx context.Context, stop model.Stop) {
 	sql, args, err := sq.Update("stop").
-								Set("longitude", stop.Longitude).
-								Set("latitude", stop.Latitude).
-								Where("name", stop.Name).ToSql()
+		Set("longitude", stop.Longitude).
+		Set("latitude", stop.Latitude).
+		Where("name", stop.Name).ToSql()
 	if err != nil {
 		log.Err(err).Msg("cant build sql")
 		return
@@ -78,7 +77,7 @@ func (p *Postgres) UpdateStop(ctx context.Context, stop model.Stop) {
 }
 
 func (p *Postgres) CreateBus(ctx context.Context, bus model.Bus) {
-	sql, args, err := sq.Insert("bus").Columns("name", "is_roundtrip").Values(bus.Name,bus.IsRoundtrip).ToSql()
+	sql, args, err := sq.Insert("bus").Columns("name", "is_roundtrip").Values(bus.Name, bus.IsRoundtrip).ToSql()
 	if err != nil {
 		log.Err(err).Msg("cant build sql")
 		return

@@ -13,7 +13,7 @@ import (
 	"github.com/syalsr/GIS/internal/app/servicegis"
 	"github.com/syalsr/GIS/internal/config"
 	"github.com/syalsr/GIS/internal/repository"
-	api "github.com/syalsr/GIS/pkg/GIS-api/GIS/v1"
+	api "github.com/syalsr/GIS/pkg/GIS/v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

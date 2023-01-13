@@ -2,12 +2,10 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/syalsr/GIS/internal/config"
 	"github.com/syalsr/GIS/internal/model"
 	"github.com/syalsr/GIS/internal/repository"
-
 )
 
 // Interface - interface for GIS
