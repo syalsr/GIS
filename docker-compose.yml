@@ -1,25 +1,6 @@
 version: '3.7'
 
 services:
-  gis:
-    build: .
-    container_name: gis
-    hostname: gis
-    restart: always
-
-    depends_on:
-      - redis
-      - postgres
-
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "5"
-
-    env_file:
-      - .env
-
   redis:
     image: redis:7
     restart: always
@@ -31,7 +12,7 @@ services:
 
   postgres:
     image: 'postgres:latest'
-    container_name: postgres
+    hostname: postgres
 
     environment:
       - POSTGRES_PASSWORD=postgrespw

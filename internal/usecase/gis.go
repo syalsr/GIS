@@ -39,10 +39,10 @@ func (g *GIS) CreateStop(ctx context.Context, name string, roadDistance []model.
 // CreateBus - create bus
 func (g *GIS) CreateBus(ctx context.Context, name string, stop []string, isRoundtrip bool) {
 	if g.R.IsStrExist(ctx, "bus", "name", name) {
-		g.R.UpdateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip})
+		g.R.UpdateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip, Stop: stop})
 		return
 	}
-	g.R.CreateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip})
+	g.R.CreateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip, Stop: stop})
 }
 
 // BuildRoute - build route from one stop to another

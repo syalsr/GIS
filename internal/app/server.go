@@ -12,7 +12,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/syalsr/GIS/internal/app/servicegis"
 	"github.com/syalsr/GIS/internal/config"
-	"github.com/syalsr/GIS/internal/repository"
 	api "github.com/syalsr/GIS/pkg/GIS/v1"
 
 	"google.golang.org/grpc"
@@ -30,7 +29,7 @@ func Run(ctx context.Context, cfg *config.App) error {
 	}
 
 	log.Info().Msg("Start migrate")
-	repository.Migrate(cfg)
+	//repository.Migrate(cfg)
 
 	log.Info().Msg("Create new gRPC server")
 	server := grpc.NewServer()

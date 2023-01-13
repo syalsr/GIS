@@ -10,13 +10,13 @@ import (
 
 func Migrate(c *config.App) {
 	fileMigrations := "file://migrations"
-
+	log.Print(c)
 	m, err := migrate.New(fileMigrations, c.PostgresURL)
 	if err != nil {
-		log.Fatal().Msgf("cant create migrate instance: %w", err)
+		log.Fatal().Msgf("cant create migrate instance: %s", err.Error())
 	}
 	
 	if err := m.Up(); err != nil {
-		log.Fatal().Msgf("cant up migrate: %s", err.Error())
+		log.Fatal().Msgf("cant up migrate: %w", err)
 	}
 }

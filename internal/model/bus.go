@@ -2,6 +2,6 @@ package model
 
 type Bus struct {
 	Name        string
-	Stop        []Stop
+	Stop        []string
 	IsRoundtrip bool
 }

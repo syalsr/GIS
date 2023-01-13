@@ -13,8 +13,8 @@ create table if not exists bus
 );
 create table if not exists bus_stop
 (
-	stop_id int references stop(stop_id),
-	bus_id int references bus(bus_id)
+	stop_name varchar(128),
+	bus_name varchar(128)
 );
 create table if not exists curvature
 (

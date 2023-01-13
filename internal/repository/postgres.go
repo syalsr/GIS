@@ -12,6 +12,12 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
+const (
+	startTransaction = "START TRANSACTION"
+	commit           = "COMMIT"
+	rollback         = "ROLLBACK"
+)
+
 // Postgres - type implement repository
 type Postgres struct {
 	Conn *pgxpool.Pool
@@ -34,32 +40,40 @@ func NewClient(cfg *config.App) Repository {
 	}
 }
 
-// IsStopExist - check if stop is exist in db
+// IsStrExist - check if stop is exist in db
 func (p *Postgres) IsStrExist(ctx context.Context, table, column, value string) bool {
 	sql, args, err := sq.Select(column).From(table).Where(sq.Eq{column: value}).ToSql()
 	if err != nil {
 		log.Err(err).Msg("cant build sql")
 		return true
 	}
-	var stop string
-	err = p.Conn.QueryRow(ctx, sql, args).Scan(&stop)
+	sql, err = sq.Dollar.ReplacePlaceholders(sql)
 	if err != nil {
-		log.Err(err).Msg("cant exec scan in var stop")
+		log.Err(err).Msg("cano replace the question mark with a dollar")
 	}
 
-	log.Debug().Msgf("Stop name: %s", stop)
+	var existValue string
+	err = p.Conn.QueryRow(ctx, sql, args...).Scan(&existValue)
 
-	return stop != ""
+	if err != nil {
+		log.Err(err).Msgf("in table %s value %s not found", table, value)
+		return false
+	}
+	return true
 }
 
+// CreateStop - create stop
 func (p *Postgres) CreateStop(ctx context.Context, stop model.Stop) {
 	sql, args, err := sq.Insert("stop").Columns("name", "longitude", "latitude").Values(stop.Name, stop.Longitude, stop.Latitude).ToSql()
 	if err != nil {
 		log.Err(err).Msg("cant build sql")
 		return
 	}
-
-	p.Conn.QueryRow(ctx, sql, args)
+	sql, err = sq.Dollar.ReplacePlaceholders(sql)
+	if err != nil {
+		log.Err(err).Msg("cano replace the question mark with a dollar")
+	}
+	p.Conn.QueryRow(ctx, sql, args...)
 }
 
 // UpdateStop - update info stop
@@ -72,18 +86,49 @@ func (p *Postgres) UpdateStop(ctx context.Context, stop model.Stop) {
 		log.Err(err).Msg("cant build sql")
 		return
 	}
-
-	p.Conn.QueryRow(ctx, sql, args)
+	sql, err = sq.Dollar.ReplacePlaceholders(sql)
+	if err != nil {
+		log.Err(err).Msg("cano replace the question mark with a dollar")
+	}
+	p.Conn.QueryRow(ctx, sql, args...)
 }
 
+// CreateBus - create bus
 func (p *Postgres) CreateBus(ctx context.Context, bus model.Bus) {
+	p.Conn.QueryRow(ctx, startTransaction)
+
 	sql, args, err := sq.Insert("bus").Columns("name", "is_roundtrip").Values(bus.Name, bus.IsRoundtrip).ToSql()
 	if err != nil {
-		log.Err(err).Msg("cant build sql")
+		log.Err(err).Msgf("cant build sql, %s", rollback)
+		p.Conn.QueryRow(ctx, rollback)
 		return
 	}
 
-	p.Conn.QueryRow(ctx, sql, args)
+	sql, err = sq.Dollar.ReplacePlaceholders(sql)
+	if err != nil {
+		p.Conn.QueryRow(ctx, rollback)
+		log.Err(err).Msgf("cant replace the question mark with a dollar, %s", rollback)
+	}
+
+	p.Conn.QueryRow(ctx, sql, args...)
+
+	for _, item := range bus.Stop {
+		sql, args, err := sq.Insert("bus_stop").Columns("stop_name", "bus_name").Values(item, bus.Name).ToSql()
+		if err != nil {
+			p.Conn.QueryRow(ctx, rollback)
+			log.Err(err).Msgf("cant build sql, %s", rollback)
+		}
+
+		sql, err = sq.Dollar.ReplacePlaceholders(sql)
+		if err != nil {
+			p.Conn.QueryRow(ctx, rollback)
+			log.Err(err).Msgf("cant replace the question mark with a dollar, %s", rollback)
+		}
+		log.Print(sql, args)
+		sqq := "INSERT INTO bus_stop (stop_name,bus_name) VALUES ($1,$2)"
+		p.Conn.QueryRow(ctx, sqq, args...)
+	}
+	p.Conn.QueryRow(ctx, commit)
 }
 
 // UpdateBus - update info bus
@@ -93,6 +138,9 @@ func (p *Postgres) UpdateBus(ctx context.Context, bus model.Bus) {
 		log.Err(err).Msg("cant build sql")
 		return
 	}
-
-	p.Conn.QueryRow(ctx, sql, args)
+	sql, err = sq.Dollar.ReplacePlaceholders(sql)
+	if err != nil {
+		log.Err(err).Msg("cant replace the question mark with a dollar")
+	}
+	p.Conn.QueryRow(ctx, sql, args...)
 }
