@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package gis.v1;
+
+option go_package = "github.com/syalsr/GIS/pkg/GIS-api/v1;gis";
+
+message RequestRoute {
+    string from = 1;
+    string to = 2;
+}
+
+message ResponseRoute {
+    string error = 1;
+    double total_time = 2;
+    repeated string stops = 3;
+}

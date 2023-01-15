@@ -34,15 +34,26 @@ func (g *GIS) CreateStop(ctx context.Context, name string, roadDistance []model.
 		return
 	}
 	g.R.CreateStop(ctx, model.Stop{Name: name, Longitude: longitude, Latitude: latitude})
+	for _, item := range roadDistance {
+		if !g.R.IsStrExist(ctx, "stop", "name", item.Name) {
+			g.R.CreateStop(ctx, model.Stop{Name: item.Name})
+		}
+		g.R.CreateCurvature(ctx, model.Stop{Name: name}, item)
+	}
+	
 }
 
 // CreateBus - create bus
+// Assume that stops already exist
 func (g *GIS) CreateBus(ctx context.Context, name string, stop []string, isRoundtrip bool) {
 	if g.R.IsStrExist(ctx, "bus", "name", name) {
 		g.R.UpdateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip, Stop: stop})
 		return
 	}
 	g.R.CreateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip, Stop: stop})
+	for _, item := range stop {
+		
+	}
 }
 
 // BuildRoute - build route from one stop to another

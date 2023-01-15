@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package gis.v1;
+
+option go_package = "github.com/syalsr/GIS/pkg/GIS-api/v1;gis";
+
+message RequestBus {
+    string name = 1;
+    repeated string stop = 2;
+    bool is_roundtrip = 3;
+  }

@@ -4,60 +4,33 @@ package gis.v1;
 
 import "google/api/annotations.proto";
 import "google/rpc/empty.proto";
+import "GIS/v1/stop.proto";
+import "GIS/v1/bus.proto";
+import "GIS/v1/route.proto";
 
 option go_package = "github.com/syalsr/GIS/pkg/GIS-api/v1;gis";
 
 service GIS {
   rpc CreateStop (RequestStop) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post : "/stop"
+      post : "/stop/v1"
       body : "*"
     };
   };
   rpc CreateBus (RequestBus) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post : "/bus"
+      post : "/bus/v1"
       body : "*"
     };
   };
   rpc BuildRoute (RequestRoute) returns (ResponseRoute) {
     option (google.api.http) = {
-      post : "/route"
+      post : "/route/v1"
       body : "*"
     };
   };
 }
 
-message RequestStop{
-  string name = 1;
-  int32 longitude = 2;
-  int32 latitude = 3;
-  repeated RoadDistance roadDistance = 4;
-}
-
-message RoadDistance {
-  string name = 1;
-  int32 curvature = 2;
-  int32 velocity = 3;
-}
-
 message ResponseWithOnlyError{
   string erorr = 1;
-}
-
-message RequestBus {
-  string name = 1;
-  repeated string stop = 2;
-  bool is_roundtrip = 3;
-}
-
-message RequestRoute {
-  string from = 1;
-  string to = 2;
-}
-
-message ResponseRoute {
-  string error = 1;
-  double total_time = 2;
-  repeated string stops = 3;
 }

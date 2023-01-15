@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package gis.v1;
+
+option go_package = "github.com/syalsr/GIS/pkg/GIS-api/v1;gis";
+
+message RequestStop{
+    string name = 1;
+    int32 longitude = 2;
+    int32 latitude = 3;
+    repeated RoadDistance roadDistance = 4;
+}
+
+message RoadDistance {
+    string name = 1;
+    int32 curvature = 2;
+    int32 velocity = 3;
+  }

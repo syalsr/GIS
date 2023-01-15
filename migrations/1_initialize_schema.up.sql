@@ -11,10 +11,11 @@ create table if not exists bus
 	name varchar(128) not null unique,
     is_roundtrip boolean
 );
-create table if not exists bus_stop
+create table if not exists bus_trip
 (
-	stop_name varchar(128),
-	bus_name varchar(128)
+	stop_id int references stop(stop_id),
+	bus_id int references bus(bus_id),
+	
 );
 create table if not exists curvature
 (
