@@ -9,6 +9,6 @@ type Stop struct {
 
 type RoadDistance struct {
 	Name      string
-	Curvature int32
-	Velocity  int32
+	Curvature float64
+	Velocity  float64
 }

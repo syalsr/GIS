@@ -13,6 +13,6 @@ message RequestStop{
 
 message RoadDistance {
     string name = 1;
-    int32 curvature = 2;
-    int32 velocity = 3;
+    double curvature = 2;
+    double velocity = 3;
   }

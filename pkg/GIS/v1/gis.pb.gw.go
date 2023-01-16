@@ -147,7 +147,7 @@ func RegisterGISHandlerServer(ctx context.Context, mux *runtime.ServeMux, server
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gis.v1.GIS/CreateStop", runtime.WithHTTPPathPattern("/stop"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gis.v1.GIS/CreateStop", runtime.WithHTTPPathPattern("/stop/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -172,7 +172,7 @@ func RegisterGISHandlerServer(ctx context.Context, mux *runtime.ServeMux, server
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gis.v1.GIS/CreateBus", runtime.WithHTTPPathPattern("/bus"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gis.v1.GIS/CreateBus", runtime.WithHTTPPathPattern("/bus/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -197,7 +197,7 @@ func RegisterGISHandlerServer(ctx context.Context, mux *runtime.ServeMux, server
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gis.v1.GIS/BuildRoute", runtime.WithHTTPPathPattern("/route"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/gis.v1.GIS/BuildRoute", runtime.WithHTTPPathPattern("/route/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -261,7 +261,7 @@ func RegisterGISHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gis.v1.GIS/CreateStop", runtime.WithHTTPPathPattern("/stop"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gis.v1.GIS/CreateStop", runtime.WithHTTPPathPattern("/stop/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -283,7 +283,7 @@ func RegisterGISHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gis.v1.GIS/CreateBus", runtime.WithHTTPPathPattern("/bus"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gis.v1.GIS/CreateBus", runtime.WithHTTPPathPattern("/bus/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -305,7 +305,7 @@ func RegisterGISHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gis.v1.GIS/BuildRoute", runtime.WithHTTPPathPattern("/route"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/gis.v1.GIS/BuildRoute", runtime.WithHTTPPathPattern("/route/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -325,11 +325,11 @@ func RegisterGISHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 }
 
 var (
-	pattern_GIS_CreateStop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"stop"}, ""))
+	pattern_GIS_CreateStop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"stop", "v1"}, ""))
 
-	pattern_GIS_CreateBus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"bus"}, ""))
+	pattern_GIS_CreateBus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"bus", "v1"}, ""))
 
-	pattern_GIS_BuildRoute_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"route"}, ""))
+	pattern_GIS_BuildRoute_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"route", "v1"}, ""))
 )
 
 var (
