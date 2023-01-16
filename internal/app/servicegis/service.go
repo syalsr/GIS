@@ -6,17 +6,18 @@ import (
 	"github.com/syalsr/GIS/internal/config"
 	"github.com/syalsr/GIS/internal/model"
 	"github.com/syalsr/GIS/internal/usecase"
-	gis "github.com/syalsr/GIS/internal/usecase"
 	api "github.com/syalsr/GIS/pkg/GIS/v1"
 
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
+// GrpcGIS - type for grpc service
 type GrpcGIS struct {
 	api.UnimplementedGISServer
-	gis gis.Interface
+	gis usecase.Interface
 }
 
+// NewGrcpGIS - new grpc service
 func NewGrcpGIS(ctx context.Context, cfg *config.App) *GrpcGIS {
 	return &GrpcGIS{
 		gis: usecase.NewGIS(ctx, cfg),
@@ -34,14 +35,13 @@ func (g *GrpcGIS) CreateStop(ctx context.Context, stop *api.RequestStop) (*empty
 		})
 	}
 	g.gis.CreateStop(ctx, stop.Name, roadDistance, stop.Longitude, stop.Latitude)
-
-	return nil, nil
+	return &emptypb.Empty{}, nil
 }
 
 // CreateBus - handler for create bus
 func (g *GrpcGIS) CreateBus(ctx context.Context, bus *api.RequestBus) (*emptypb.Empty, error) {
 	g.gis.CreateBus(ctx, bus.Name, bus.Stop, bus.IsRoundtrip)
-	return nil, nil
+	return &emptypb.Empty{}, nil
 }
 
 // BuildRoute - handler for build route from one stop to another stop

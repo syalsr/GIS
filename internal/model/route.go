@@ -9,3 +9,7 @@ type RequestRoute struct {
 	From string
 	To   string
 }
+
+type Graph struct {
+	
+}
