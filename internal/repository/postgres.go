@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/rs/zerolog/log"
 	"github.com/syalsr/GIS/internal/config"
@@ -102,14 +103,14 @@ func (p *Postgres) UpdateStop(ctx context.Context, stop model.Stop) {
 func (p *Postgres) CreateCurvature(ctx context.Context, stop model.Stop, roadDistance model.RoadDistance) {
 	p.Conn.QueryRow(ctx, startTransaction)
 
-	stopIDFrom, err := p.GetIDByName(ctx, "stop", "stop_id", stop.Name)
+	stopIDFrom, err := p.GetIDByName(ctx, "stop", "id", stop.Name)
 	if err != nil {
 		p.Conn.QueryRow(ctx, rollback)
 		log.Err(err).Msgf("cant get stopIDFrom for: %s", stop.Name)
 		return
 	}
 
-	stopIDTo, err := p.GetIDByName(ctx, "stop", "stop_id", roadDistance.Name)
+	stopIDTo, err := p.GetIDByName(ctx, "stop", "id", roadDistance.Name)
 	if err != nil {
 		p.Conn.QueryRow(ctx, rollback)
 		log.Err(err).Msgf("cant get stopIDTo for: %s", roadDistance.Name)
@@ -123,7 +124,7 @@ func (p *Postgres) CreateCurvature(ctx context.Context, stop model.Stop, roadDis
 		log.Err(err).Msg("cant build sql")
 		return
 	}
-	
+
 	insertCurvature, err = sq.Dollar.ReplacePlaceholders(insertCurvature)
 	if err != nil {
 		p.Conn.QueryRow(ctx, rollback)
@@ -211,37 +212,56 @@ func (p *Postgres) UpdateBus(ctx context.Context, bus model.Bus) {
 }
 
 // CreateTrip - set bus route
-func (p *Postgres) CreateTrip(ctx context.Context, stopName, busName string) {
-	p.Conn.QueryRow(ctx, startTransaction)
-
-	stopIDFrom, err := p.GetIDByName(ctx, "bus", "bus_id", stop.Name)
+func (p *Postgres) CreateTrip(ctx context.Context, stopName []string, busName string) {
+	tr, err := p.Conn.Begin(ctx)
 	if err != nil {
-		p.Conn.QueryRow(ctx, rollback)
-		log.Err(err).Msgf("cant get stopIDFrom for: %s", stop.Name)
+		log.Err(err).Msg("cant create transaction")
+	}
+
+	busID, err := p.GetIDByName(ctx, "bus", "id", busName)
+	if err != nil {
+		err = tr.Rollback(ctx)
+		if err != nil {
+			log.Err(err).Msgf("cant rollback transaction: %w", err)
+		}
+		log.Err(err).Msgf("cant get busID for: %s", busName)
 		return
 	}
 
-	stopIDTo, err := p.GetIDByName(ctx, "stop", "stop_id", roadDistance.Name)
-	if err != nil {
-		p.Conn.QueryRow(ctx, rollback)
-		log.Err(err).Msgf("cant get stopIDTo for: %s", roadDistance.Name)
-		return
-	}
+	b := &pgx.Batch{}
+	
+	for _, item := range stopName {
+		stopID, err := p.GetIDByName(ctx, "stop", "id", item)
+		if err != nil {
+			err = tr.Rollback(ctx)
+			if err != nil {
+				log.Err(err).Msg("cant rollback transaction")
+			}
+			log.Err(err).Msgf("cant get stopID for: %s", stopName)
+			return
+		}
 
-	log.Info().Msgf("Insert curvature between %d and %d - %d", stopIDFrom, stopIDTo, roadDistance.Curvature)
-	insertCurvature, args, err := sq.Insert("curvature").Columns("stop_id_from", "stop_id_to", "length").Values(stopIDFrom, stopIDTo, roadDistance.Curvature).ToSql()
-	if err != nil {
-		p.Conn.QueryRow(ctx, rollback)
-		log.Err(err).Msg("cant build sql")
-		return
+		insertIntoBusTrip, args, err := sq.Insert("bus_trip").Columns("stop_id", "bus_id").Values(stopID, busID).ToSql()
+		if err != nil {
+			log.Err(err).Msgf("cant build")
+		}
+		insertIntoBusTrip, err = sq.Dollar.ReplacePlaceholders(insertIntoBusTrip)
+		if err != nil {
+			err = tr.Rollback(ctx)
+			if err != nil {
+				log.Err(err).Msg("cant rollback transaction")
+			}
+			log.Err(err).Msgf("cant replace the question mark with a dollar, %s", rollback)
+		}
+
+		b.Queue(insertIntoBusTrip, args...)
 	}
 	
-	insertCurvature, err = sq.Dollar.ReplacePlaceholders(insertCurvature)
-	if err != nil {
-		p.Conn.QueryRow(ctx, rollback)
-		log.Err(err).Msgf("cant replace the question mark with a dollar, %s", rollback)
-	}
-	p.Conn.QueryRow(ctx, insertCurvature, args...)
+	tr.SendBatch(ctx, b)
 
-	p.Conn.QueryRow(ctx, commit)
+
+	err = tr.Commit(ctx)
+	if err != nil {
+		log.Err(err).Msgf("cant commit transaction: %w", err)
+	}
 }

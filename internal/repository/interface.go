@@ -14,5 +14,5 @@ type Repository interface {
 	GetIDByName(ctx context.Context, table, column, name string) (int, error)
 	CreateBus(ctx context.Context, bus model.Bus)
 	UpdateBus(ctx context.Context, bus model.Bus)
-	CreateTrip(ctx context.Context, stopName, busName string)
+	CreateTrip(ctx context.Context, stopName []string, busName string)
 }

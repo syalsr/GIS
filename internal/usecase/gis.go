@@ -51,9 +51,7 @@ func (g *GIS) CreateBus(ctx context.Context, name string, stop []string, isRound
 		return
 	}
 	g.R.CreateBus(ctx, model.Bus{Name: name, IsRoundtrip: isRoundtrip, Stop: stop})
-	for _, item := range stop {
-		
-	}
+	g.R.CreateTrip(ctx, stop, name)
 }
 
 // BuildRoute - build route from one stop to another
