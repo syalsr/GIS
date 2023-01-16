@@ -51,7 +51,6 @@ func (g *GrpcGIS) BuildRoute(ctx context.Context, route *api.RequestRoute) (*api
 		return nil, err
 	}
 	return &api.ResponseRoute{
-		Error:     err.Error(),
 		TotalTime: req.TotalTime,
 		Stops:     req.Stops,
 	}, nil

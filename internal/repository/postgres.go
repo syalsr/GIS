@@ -84,18 +84,24 @@ func (p *Postgres) CreateStop(ctx context.Context, stop model.Stop) {
 func (p *Postgres) UpdateStop(ctx context.Context, stop model.Stop) {
 	log.Info().Msgf("Update stop %s %d %d", stop.Name, stop.Longitude, stop.Latitude)
 
+	stopID, err := p.GetIDByName(ctx, "stop", "id", stop.Name)
+	if err != nil {
+		log.Err(err).Msg("cant get stop id by name")
+		return
+	}
 	sql, args, err := sq.Update("stop").
 		Set("longitude", stop.Longitude).
 		Set("latitude", stop.Latitude).
-		Where("name", stop.Name).ToSql()
+		Where(sq.Eq{"id": stopID}).ToSql()
 	if err != nil {
 		log.Err(err).Msg("cant build sql")
 		return
 	}
 	sql, err = sq.Dollar.ReplacePlaceholders(sql)
 	if err != nil {
-		log.Err(err).Msg("cano replace the question mark with a dollar")
+		log.Err(err).Msg("cant replace the question mark with a dollar")
 	}
+	log.Info().Msgf("sql: %s", sql)
 	p.Conn.QueryRow(ctx, sql, args...)
 }
 
@@ -139,6 +145,7 @@ func (p *Postgres) CreateCurvature(ctx context.Context, stop model.Stop, roadDis
 // GetIDByName - get id from bus, stop tables
 func (p *Postgres) GetIDByName(ctx context.Context, table, column, name string) (int, error) {
 	log.Info().Msgf("Get id for table: %s, column: %s, name: %s", table, column, name)
+	
 	getStopID, args, err := sq.Select(column).From(table).Where(sq.Eq{"name": name}).ToSql()
 	if err != nil {
 		log.Err(err).Msg("cant build sql")

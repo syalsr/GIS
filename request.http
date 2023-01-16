@@ -3,7 +3,7 @@ POST http://localhost:9098/stop/v1
 Content-Type: application/json
 
 {
-    "name": "Lublino-21",
+    "name": "Lublino-1",
     "longitude": 32,
     "latitude": 43,
     "roadDistance": [
