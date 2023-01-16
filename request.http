@@ -1,0 +1,149 @@
+### POST request with json body
+POST http://localhost:9098/stop
+Content-Type: application/json
+
+{
+    "name": "Lublino-1",
+    "longitude": 32,
+    "latitude": 43,
+    "roadDistance": [
+        {
+            "name": "Lublino-2",
+            "curvature": 32,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-3",
+            "curvature": 23,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-4",
+            "curvature": 31,
+            "velocity": 15
+        }
+    ]
+}
+
+### POST request with json body
+POST http://localhost:9098/stop
+Content-Type: application/json
+
+{
+    "name": "Lublino-2",
+    "longitude": 32,
+    "latitude": 43,
+    "roadDistance": [
+        {
+            "name": "Lublino-1",
+            "curvature": 32,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-3",
+            "curvature": 23,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-4",
+            "curvature": 31,
+            "velocity": 15
+        }
+    ]
+}
+
+### POST request with json body
+POST http://localhost:9098/stop
+Content-Type: application/json
+
+{
+    "name": "Lublino-3",
+    "longitude": 32,
+    "latitude": 43,
+    "roadDistance": [
+        {
+            "name": "Lublino-1",
+            "curvature": 32,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-2",
+            "curvature": 23,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-4",
+            "curvature": 31,
+            "velocity": 15
+        }
+    ]
+}
+
+### POST request with json body
+POST http://localhost:9098/stop
+Content-Type: application/json
+
+{
+    "name": "Lublino-4",
+    "longitude": 32,
+    "latitude": 43,
+    "roadDistance": [
+        {
+            "name": "Lublino-1",
+            "curvature": 32,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-2",
+            "curvature": 23,
+            "velocity": 15
+        },
+        {
+            "name": "Lublino-3",
+            "curvature": 31,
+            "velocity": 15
+        }
+    ]
+}
+
+### POST request with json body
+POST http://localhost:9098/bus
+Content-Type: application/json
+
+{
+    "name": "1",
+    "is_roundtrip": true,
+    "stop": [
+        "Lublino-1",
+        "Lublino-2",
+        "Lublino-3"
+    ]
+}
+
+### POST request with json body
+POST http://localhost:9098/bus
+Content-Type: application/json
+
+{
+    "name": "2",
+    "is_roundtrip": true,
+    "stop": [
+        "Lublino-3",
+        "Lublino-2",
+        "Lublino-4"
+    ]
+}
+
+### POST request with json body
+POST http://localhost:9098/bus
+Content-Type: application/json
+
+{
+    "name": "3",
+    "is_roundtrip": true,
+    "stop": [
+        "Lublino-4",
+        "Lublino-2",
+        "Lublino-1"
+    ]
+}
