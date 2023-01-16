@@ -20,18 +20,19 @@ type Edge struct {
 }
 
 type DirectedWeightedGraph struct {
-	graph   []Vertex
+	graph   map[string]*Vertex
 	weights map[*Vertex]int
 }
 
 func NewDirectedWeightedGraph() *DirectedWeightedGraph {
 	return &DirectedWeightedGraph{
+		graph: make(map[string]*Vertex),
 		weights: make(map[*Vertex]int),
 	}
 }
 
 func (d *DirectedWeightedGraph) AddVertex(vertex Vertex) {
-	d.graph = append(d.graph, vertex)
+	d.graph[vertex.name] = &vertex
 	d.weights[&vertex] = vertex.weight
 }
 
@@ -40,4 +41,5 @@ func (d *DirectedWeightedGraph) Init(startStop Vertex) {
 		item.weight = int(math.Inf(1))
 		item.visited = false
 	}
+	d.graph[startStop.name].weight = 0
 }
