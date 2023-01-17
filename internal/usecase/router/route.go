@@ -1,5 +1,7 @@
 package router
 
+import "github.com/rs/zerolog/log"
+
 type Interface interface {
 	BuildRouter(start, finish string) *Vertex
 	FillData(vertex *Vertex, emptyRoadDistance bool)
@@ -16,6 +18,7 @@ func NewRouter() Interface {
 }
 
 func (r *Router) BuildRouter(start, finish string) *Vertex {
+	log.Info().Msgf("Build route from %s to %s", start, finish)
 	proceed := Queue{vertex: []Vertex{*r.Dwg.graph[start]}}
 	for !proceed.IsEmpty() {
 		current := proceed.Pop()

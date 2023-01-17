@@ -4,22 +4,17 @@ Content-Type: application/json
 
 {
     "name": "Lublino-1",
-    "longitude": 32,
-    "latitude": 43,
+    "longitude": 10,
+    "latitude": 10,
     "roadDistance": [
         {
             "name": "Lublino-2",
-            "curvature": 32,
+            "curvature": 30,
             "velocity": 15
         },
         {
             "name": "Lublino-3",
-            "curvature": 23,
-            "velocity": 15
-        },
-        {
-            "name": "Lublino-4",
-            "curvature": 31,
+            "curvature": 20,
             "velocity": 15
         }
     ]
@@ -31,22 +26,22 @@ Content-Type: application/json
 
 {
     "name": "Lublino-2",
-    "longitude": 32,
-    "latitude": 43,
+    "longitude": 30,
+    "latitude": 10,
     "roadDistance": [
         {
             "name": "Lublino-1",
-            "curvature": 32,
+            "curvature": 30,
             "velocity": 15
         },
         {
             "name": "Lublino-3",
-            "curvature": 23,
+            "curvature": 20,
             "velocity": 15
         },
         {
             "name": "Lublino-4",
-            "curvature": 31,
+            "curvature": 40,
             "velocity": 15
         }
     ]
@@ -63,17 +58,17 @@ Content-Type: application/json
     "roadDistance": [
         {
             "name": "Lublino-1",
-            "curvature": 32,
+            "curvature": 30,
             "velocity": 15
         },
         {
             "name": "Lublino-2",
-            "curvature": 23,
+            "curvature": 30,
             "velocity": 15
         },
         {
             "name": "Lublino-4",
-            "curvature": 31,
+            "curvature": 15,
             "velocity": 15
         }
     ]
@@ -89,18 +84,13 @@ Content-Type: application/json
     "latitude": 43,
     "roadDistance": [
         {
-            "name": "Lublino-1",
-            "curvature": 32,
-            "velocity": 15
-        },
-        {
             "name": "Lublino-2",
-            "curvature": 23,
+            "curvature": 40,
             "velocity": 15
         },
         {
             "name": "Lublino-3",
-            "curvature": 31,
+            "curvature": 15,
             "velocity": 15
         }
     ]
